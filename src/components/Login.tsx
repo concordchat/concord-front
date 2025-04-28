@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import { Mail, Lock, ArrowRight } from 'lucide-react';
 
 export function Login() {
   const [email, setEmail] = useState('');
@@ -15,15 +16,18 @@ export function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0E0E10] px-4">
-      <div className="max-w-xl w-full space-y-8 md:bg-[#18181B] bg-transparent p-4 md:p-24 rounded-sm shadow-xl">
+    <div className="min-h-screen flex items-center justify-center bg-[#0A0A0B] px-4">
+      <div className="max-w-xl w-full space-y-8 md:bg-[#0A0A0B] bg-transparent p-4 md:p-24 rounded-xl shadow-2xl border border-[#1F1F23]">
         <div className="text-center">
-          <h2 className="mt-6 text-3xl font-bold text-zinc-100">We Missed You!</h2>
-          <p className="text-sm text-zinc-400">Please sign in to your account</p>
+          <h2 className="mt-6 text-3xl font-bold text-[#E4E4E7]">Bem-vindo de volta!</h2>
+          <p className="text-sm text-[#9D9DA7] mt-2">Por favor, faça login na sua conta</p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Mail size={16} className="text-[#9D9DA7]" />
+              </div>
               <input
                 id="email"
                 name="email"
@@ -32,17 +36,14 @@ export function Login() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="peer w-full px-3 pt-5 pb-2 bg-zinc-700 border-none border-zinc-600 rounded-sm text-zinc-100 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#34AB70] focus:border-transparent"
-                placeholder="Email address"
+                className="w-full pl-9 pr-4 py-3 bg-[#1F1F23] border-none rounded-lg text-[#E4E4E7] placeholder-[#9D9DA7] focus:outline-none focus:ring-2 focus:ring-[#2A2A2F] transition-all duration-200"
+                placeholder="Email"
               />
-              <label
-                htmlFor="email"
-                className="absolute left-3 top-2 text-sm text-zinc-400 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-zinc-500 peer-focus:top-2 peer-focus:text-sm peer-focus:text-zinc-300"
-              >
-                Email address
-              </label>
             </div>
             <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Lock size={16} className="text-[#9D9DA7]" />
+              </div>
               <input
                 id="password"
                 name="password"
@@ -51,30 +52,25 @@ export function Login() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="peer w-full px-3 pt-5 pb-2 bg-zinc-700 border-none border-zinc-600 rounded-sm text-zinc-100 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#34AB70] focus:border-transparent"
-                placeholder="Password"
+                className="w-full pl-9 pr-4 py-3 bg-[#1F1F23] border-none rounded-lg text-[#E4E4E7] placeholder-[#9D9DA7] focus:outline-none focus:ring-2 focus:ring-[#2A2A2F] transition-all duration-200"
+                placeholder="Senha"
               />
-              <label
-                htmlFor="password"
-                className="absolute left-3 top-2 text-sm text-zinc-400 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-zinc-500 peer-focus:top-2 peer-focus:text-sm peer-focus:text-zinc-300"
-              >
-                Password
-              </label>
             </div>
           </div>
 
           <div>
             <button
               type="submit"
-              className="w-full flex justify-center py-4 px-4 border border-transparent rounded-sm text-sm font-medium text-white bg-[#34AB70] hover:bg-[#34AB70]/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#34AB70]"
+              className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-lg text-sm font-medium text-white bg-[#34AB70] hover:bg-[#34AB70]/90 focus:outline-none focus:ring-2 focus:ring-[#34AB70] transition-all duration-200"
             >
-              Sign in
+              Entrar
+              <ArrowRight size={16} />
             </button>
             <Link
               to="/register"
-              className="mt-4 block text-center text-sm text-[#34AB70] hover:text-[#34AB70]/80"
+              className="mt-4 block text-center text-sm text-[#34AB70] hover:text-[#34AB70]/90 transition-all duration-200"
             >
-              Don't have an account? Create one
+              Não tem uma conta? Crie uma
             </Link>
           </div>
         </form>

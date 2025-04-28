@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { X, Plus } from "lucide-react";
+import { X, Plus, Hash, Bell } from "lucide-react";
 import { SidebarState, UserAttr } from "../types";
 import { ModalUsers } from "./ModalUsers";
 import { ModalCreateChat } from "./ModalCreateChat";
@@ -47,18 +47,21 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex">
-      <div className="w-lg bg-zinc-800 border-r border-zinc-700 shadow-lg">
-        <div className="h-12 flex items-center justify-between p-8 border-b border-zinc-700">
-          <h2 className="font-bold text-zinc-100 text-xl">Concord</h2>
-          <button onClick={onClose} className="text-zinc-400 hover:text-zinc-100 cursor-pointer">
+      <div className="w-80 bg-[#0A0A0B] border-r border-[#1F1F23] shadow-lg">
+        <div className="h-16 flex items-center justify-between px-6 border-b border-[#1F1F23]">
+          <h2 className="font-bold text-[#E4E4E7] text-xl">Concord</h2>
+          <button 
+            onClick={onClose} 
+            className="p-2 text-[#9D9DA7] hover:text-[#E4E4E7] hover:bg-[#1F1F23] rounded-lg transition-all duration-200"
+          >
             <X size={20} />
           </button>
         </div>
 
         <div className="p-4">
-          <div className="space-y-2">
-            <h3 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">
-              Chat Rooms
+          <div className="space-y-1">
+            <h3 className="text-xs font-semibold text-[#9D9DA7] uppercase tracking-wider mb-3 px-2">
+              Canais
             </h3>
             {chatRooms.map((room, index) => (
               <button
@@ -66,35 +69,37 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 onClick={() => {
                   onChannelSelect(index);
                 }}
-                className={`cursor-pointer w-full text-left px-2 py-1 rounded transition-colors ${
+                className={`cursor-pointer w-full text-left px-3 py-2 rounded-lg transition-all duration-200 flex items-center justify-between ${
                   room.id === currentChannel?.id 
-                    ? "bg-zinc-700 text-white"
-                    : "hover:bg-zinc-700/50 text-zinc-300 hover:text-zinc-100"
+                    ? "bg-[#1F1F23] text-[#E4E4E7]"
+                    : "hover:bg-[#1F1F23]/50 text-[#9D9DA7] hover:text-[#E4E4E7]"
                 }`}
               >
-                <div className="flex justify-between items-center">
-                  <span># {room.attributes.name}</span>
-                  {unreadMessages[room.id] > 0 && (
-                    <span className="bg-red-500 text-white text-xs rounded-full px-2 py-1">
-                      {unreadMessages[room.id]}
-                    </span>
-                  )}
+                <div className="flex items-center gap-2">
+                  <Hash size={16} className="text-[#9D9DA7]" />
+                  <span>{room.attributes.name}</span>
                 </div>
+                {unreadMessages[room.id] > 0 && (
+                  <span className="bg-[#FF4B4B] text-white text-xs rounded-full px-2 py-1 flex items-center gap-1">
+                    <Bell size={12} />
+                    {unreadMessages[room.id]}
+                  </span>
+                )}
               </button>
             ))}
           </div>
           <div className="mt-4">
             <button
               onClick={() => setIsModalUsersOpen(true)}
-              className="cursor-pointer flex items-center gap-2 bg-[#34AB70] hover:bg-[#34AB70]/80 px-4 py-2 rounded-md transition-colors w-full"
+              className="cursor-pointer flex items-center gap-2 bg-[#34AB70] hover:bg-[#34AB70]/90 px-4 py-2.5 rounded-lg transition-all duration-200 w-full"
             >
               <Plus size={20} className="text-white" />
-              <span className="text-white">New Chatroom</span>
+              <span className="text-white font-medium">Novo Canal</span>
             </button>
           </div>
         </div>
       </div>
-      <div className="flex-1 bg-black/50" onClick={onClose} />
+      <div className="flex-1 bg-black/50 backdrop-blur-sm" onClick={onClose} />
 
       <ModalUsers isOpen={isModalUsersOpen} onClose={() => setIsModalUsersOpen(false)} onConfirm={handleConfirmUsers} maxUsers={7} />
       <ModalCreateChat isOpen={isModalChatOpen} onClose={() => setIsModalChatOpen(false)} onConfirm={handleConfirmChat} />

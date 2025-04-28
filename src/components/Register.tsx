@@ -5,6 +5,7 @@ import { toast } from 'react-hot-toast';
 import { ChromePicker, ColorResult } from 'react-color';
 import { getRandomColor } from '../hooks/getRandomColor';
 import { colors } from '../utils';
+import { User, Mail, Lock, Palette, ArrowRight } from 'lucide-react';
 
 export function Register() {
   const userColor = getRandomColor;
@@ -21,7 +22,7 @@ export function Register() {
     e.preventDefault();
 
     if (password !== password_confirmation) {
-      toast.error("Passwords do not match!");
+      toast.error("As senhas não coincidem!");
       return;
     }
 
@@ -42,15 +43,18 @@ export function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0E0E10] px-4">
-      <div className="max-w-xl w-full space-y-8 md:bg-[#18181B] bg-transparent p-4 md:p-24 rounded-sm shadow-xl">
+    <div className="min-h-screen flex items-center justify-center bg-[#0A0A0B] px-4">
+      <div className="max-w-xl w-full space-y-8 md:bg-[#0A0A0B] bg-transparent p-4 md:p-24 rounded-xl shadow-2xl border border-[#1F1F23]">
         <div className="text-center">
-          <h2 className="mt-6 text-3xl font-bold text-zinc-100">Join us today!</h2>
-          <p className="text-sm text-zinc-400">Create an account to get started</p>
+          <h2 className="mt-6 text-3xl font-bold text-[#E4E4E7]">Junte-se a nós!</h2>
+          <p className="text-sm text-[#9D9DA7] mt-2">Crie uma conta para começar</p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <User size={16} className="text-[#9D9DA7]" />
+              </div>
               <input
                 id="name"
                 name="name"
@@ -58,17 +62,14 @@ export function Register() {
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="peer w-full px-3 pt-5 pb-2 bg-zinc-700 border-none rounded-sm text-zinc-100 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#34AB70]"
-                placeholder="Full Name"
+                className="w-full pl-9 pr-4 py-3 bg-[#1F1F23] border-none rounded-lg text-[#E4E4E7] placeholder-[#9D9DA7] focus:outline-none focus:ring-2 focus:ring-[#2A2A2F] transition-all duration-200"
+                placeholder="Nome completo"
               />
-              <label
-                htmlFor="name"
-                className="absolute left-3 top-2 text-sm text-zinc-400 transition-all peer-placeholder-shown:top-3 peer-focus:top-2 peer-focus:text-sm peer-focus:text-zinc-300"
-              >
-                Full Name
-              </label>
             </div>
             <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Mail size={16} className="text-[#9D9DA7]" />
+              </div>
               <input
                 id="email"
                 name="email"
@@ -77,17 +78,14 @@ export function Register() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="peer w-full px-3 pt-5 pb-2 bg-zinc-700 border-none rounded-sm text-zinc-100 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#34AB70]"
-                placeholder="Email address"
+                className="w-full pl-9 pr-4 py-3 bg-[#1F1F23] border-none rounded-lg text-[#E4E4E7] placeholder-[#9D9DA7] focus:outline-none focus:ring-2 focus:ring-[#2A2A2F] transition-all duration-200"
+                placeholder="Email"
               />
-              <label
-                htmlFor="email"
-                className="absolute left-3 top-2 text-sm text-zinc-400 transition-all peer-placeholder-shown:top-3 peer-focus:top-2 peer-focus:text-sm peer-focus:text-zinc-300"
-              >
-                Email address
-              </label>
             </div>
             <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Lock size={16} className="text-[#9D9DA7]" />
+              </div>
               <input
                 id="password"
                 name="password"
@@ -96,17 +94,14 @@ export function Register() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="peer w-full px-3 pt-5 pb-2 bg-zinc-700 border-none rounded-sm text-zinc-100 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#34AB70]"
-                placeholder="Password"
+                className="w-full pl-9 pr-4 py-3 bg-[#1F1F23] border-none rounded-lg text-[#E4E4E7] placeholder-[#9D9DA7] focus:outline-none focus:ring-2 focus:ring-[#2A2A2F] transition-all duration-200"
+                placeholder="Senha"
               />
-              <label
-                htmlFor="password"
-                className="absolute left-3 top-2 text-sm text-zinc-400 transition-all peer-placeholder-shown:top-3 peer-focus:top-2 peer-focus:text-sm peer-focus:text-zinc-300"
-              >
-                Password
-              </label>
             </div>
             <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Lock size={16} className="text-[#9D9DA7]" />
+              </div>
               <input
                 id="confirm-password"
                 name="confirm-password"
@@ -114,34 +109,32 @@ export function Register() {
                 required
                 value={password_confirmation}
                 onChange={(e) => setpassword_confirmation(e.target.value)}
-                className="peer w-full px-3 pt-5 pb-2 bg-zinc-700 border-none rounded-sm text-zinc-100 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-[#34AB70]"
-                placeholder="Confirm Password"
+                className="w-full pl-9 pr-4 py-3 bg-[#1F1F23] border-none rounded-lg text-[#E4E4E7] placeholder-[#9D9DA7] focus:outline-none focus:ring-2 focus:ring-[#2A2A2F] transition-all duration-200"
+                placeholder="Confirmar senha"
               />
-              <label
-                htmlFor="confirm-password"
-                className="absolute left-3 top-2 text-sm text-zinc-400 transition-all peer-placeholder-shown:top-3 peer-focus:top-2 peer-focus:text-sm peer-focus:text-zinc-300"
-              >
-                Confirm Password
-              </label>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center gap-4 p-3 bg-[#1F1F23] rounded-lg">
               <div
-                className="w-10 h-10 rounded-full flex items-center justify-center cursor-pointer"
-                style={{ backgroundColor: color }}
+                className="w-10 h-10 rounded-full flex items-center justify-center cursor-pointer shadow-lg transition-all duration-200 hover:scale-105"
+                style={{ 
+                  backgroundColor: color,
+                  boxShadow: `0 0 0 2px ${color}20`
+                }}
                 onClick={() => setShowColorPicker(!showColorPicker)}
               >
-                <span className="text-white text-sm">{name.charAt(0).toUpperCase()}</span>
+                <span className="text-white text-sm font-semibold">{name.charAt(0).toUpperCase()}</span>
               </div>
-              <label className="text-sm text-zinc-400 transition-all peer-placeholder-shown:top-3 peer-focus:top-2 peer-focus:text-sm peer-focus:text-zinc-300">
-                Choose your favorite color
-              </label>
+              <div className="flex items-center gap-2 text-[#9D9DA7]">
+                <Palette size={16} />
+                <span className="text-sm">Escolha sua cor favorita</span>
+              </div>
               {showColorPicker && (
-                <div className="absolute z-10 mt-2 p-4 bg-[#18181B] rounded-sm shadow-lg">
+                <div className="absolute z-10 mt-2 p-4 bg-[#0A0A0B] rounded-xl shadow-2xl border border-[#1F1F23]">
                   <div className="grid grid-cols-3 gap-2 mb-4">
                     {colors.map((stdColor) => (
                       <div
                         key={stdColor}
-                        className="w-8 h-8 rounded-full cursor-pointer"
+                        className="w-8 h-8 rounded-full cursor-pointer transition-all duration-200 hover:scale-110"
                         style={{ backgroundColor: stdColor }}
                         onClick={() => setColor(stdColor)}
                       />
@@ -154,9 +147,9 @@ export function Register() {
                   <button
                     type="button"
                     onClick={handleCloseColorPicker}
-                    className="mt-4 w-full py-2 px-4 text-sm font-medium text-white bg-[#34AB70] hover:bg-[#34AB70]/80 rounded-sm"
+                    className="mt-4 w-full py-2.5 px-4 text-sm font-medium text-white bg-[#34AB70] hover:bg-[#34AB70]/90 rounded-lg transition-all duration-200"
                   >
-                    Done
+                    Concluído
                   </button>
                 </div>
               )}
@@ -165,15 +158,16 @@ export function Register() {
           <div>
             <button
               type="submit"
-              className="w-full flex justify-center py-4 px-4 border border-transparent rounded-sm text-sm font-medium text-white bg-[#34AB70] hover:bg-[#34AB70]/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#34AB70]"
+              className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-lg text-sm font-medium text-white bg-[#34AB70] hover:bg-[#34AB70]/90 focus:outline-none focus:ring-2 focus:ring-[#34AB70] transition-all duration-200"
             >
-              Sign up
+              Criar conta
+              <ArrowRight size={16} />
             </button>
             <Link
               to="/login"
-              className="mt-4 block text-center text-sm text-[#34AB70] hover:text-[#34AB70]/80"
+              className="mt-4 block text-center text-sm text-[#34AB70] hover:text-[#34AB70]/90 transition-all duration-200"
             >
-              Already have an account? Sign in
+              Já tem uma conta? Faça login
             </Link>
           </div>
         </form>
