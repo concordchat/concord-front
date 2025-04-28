@@ -27,16 +27,32 @@ function App() {
             <Route path="/" element={<Navigate to="/chat" replace />} />
           </Routes>
         </Router>
-        <ConditionalToaster />
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            duration: 3000,
+            style: {
+              background: '#1F1F23',
+              color: '#E4E4E7',
+              border: '1px solid #2A2A2F',
+            },
+            success: {
+              iconTheme: {
+                primary: '#34AB70',
+                secondary: '#1F1F23',
+              },
+            },
+            error: {
+              iconTheme: {
+                primary: '#EF4444',
+                secondary: '#1F1F23',
+              },
+            },
+          }}
+        />
       </GeneralProvider>
     </AuthProvider>
   );
-}
-
-function ConditionalToaster() {
-  const { currentChannelIndex } = useGeneral();
-
-  return currentChannelIndex === null ? <Toaster position="top-center" /> : null;
 }
 
 export default App;

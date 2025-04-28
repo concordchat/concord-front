@@ -1,45 +1,58 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { toast } from 'react-hot-toast';
 import { ChromePicker, ColorResult } from 'react-color';
 import { getRandomColor } from '../hooks/getRandomColor';
 import { colors } from '../utils';
-import { User, Mail, Lock, Palette, ArrowRight } from 'lucide-react';
+import { User, Mail, Lock, Palette, ArrowRight, Loader2 } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { registerSchema, RegisterFormData } from '../schemas/auth';
 
 export function Register() {
   const userColor = getRandomColor;
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [password_confirmation, setpassword_confirmation] = useState('');
-  const [color, setColor] = useState<string>(userColor);
-  const [showColorPicker, setShowColorPicker] = useState(false);
-  const [name, setName] = useState('');
-  const { register } = useAuth();
+  const { register: registerUser } = useAuth();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [showColorPicker, setShowColorPicker] = React.useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      color: userColor(),
+    },
+  });
 
-    if (password !== password_confirmation) {
-      toast.error("As senhas não coincidem!");
-      return;
-    }
-
-    try {
-      await register(name, email, password, password_confirmation, color);
-      navigate('/chat');
-    } catch (error) {
-      console.error("Erro ao registrar:", error);
-    }
-  };
+  const color = watch('color');
 
   const handleColorChange = (color: ColorResult) => {
-    setColor(color.hex);
+    setValue('color', color.hex);
   };
 
   const handleCloseColorPicker = () => {
     setShowColorPicker(false);
+  };
+
+  const onSubmit = async (data: RegisterFormData) => {
+    try {
+      setIsLoading(true);
+      await registerUser(
+        data.name,
+        data.email,
+        data.password,
+        data.password_confirmation,
+        data.color
+      );
+      navigate('/chat');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -49,69 +62,71 @@ export function Register() {
           <h2 className="mt-6 text-3xl font-bold text-[#E4E4E7]">Junte-se a nós!</h2>
           <p className="text-sm text-[#9D9DA7] mt-2">Crie uma conta para começar</p>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
           <div className="space-y-4">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <User size={16} className="text-[#9D9DA7]" />
               </div>
               <input
-                id="name"
-                name="name"
+                {...register('name')}
                 type="text"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full pl-9 pr-4 py-3 bg-[#1F1F23] border-none rounded-lg text-[#E4E4E7] placeholder-[#9D9DA7] focus:outline-none focus:ring-2 focus:ring-[#2A2A2F] transition-all duration-200"
+                className={`w-full pl-9 pr-4 py-3 bg-[#1F1F23] border-none rounded-lg text-[#E4E4E7] placeholder-[#9D9DA7] focus:outline-none focus:ring-2 focus:ring-[#2A2A2F] transition-all duration-200 ${
+                  errors.name ? 'ring-2 ring-red-500' : ''
+                }`}
                 placeholder="Nome completo"
               />
+              {errors.name && (
+                <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>
+              )}
             </div>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <Mail size={16} className="text-[#9D9DA7]" />
               </div>
               <input
-                id="email"
-                name="email"
+                {...register('email')}
                 type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-9 pr-4 py-3 bg-[#1F1F23] border-none rounded-lg text-[#E4E4E7] placeholder-[#9D9DA7] focus:outline-none focus:ring-2 focus:ring-[#2A2A2F] transition-all duration-200"
+                className={`w-full pl-9 pr-4 py-3 bg-[#1F1F23] border-none rounded-lg text-[#E4E4E7] placeholder-[#9D9DA7] focus:outline-none focus:ring-2 focus:ring-[#2A2A2F] transition-all duration-200 ${
+                  errors.email ? 'ring-2 ring-red-500' : ''
+                }`}
                 placeholder="Email"
               />
+              {errors.email && (
+                <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
+              )}
             </div>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <Lock size={16} className="text-[#9D9DA7]" />
               </div>
               <input
-                id="password"
-                name="password"
+                {...register('password')}
                 type="password"
-                autoComplete="new-password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-9 pr-4 py-3 bg-[#1F1F23] border-none rounded-lg text-[#E4E4E7] placeholder-[#9D9DA7] focus:outline-none focus:ring-2 focus:ring-[#2A2A2F] transition-all duration-200"
+                className={`w-full pl-9 pr-4 py-3 bg-[#1F1F23] border-none rounded-lg text-[#E4E4E7] placeholder-[#9D9DA7] focus:outline-none focus:ring-2 focus:ring-[#2A2A2F] transition-all duration-200 ${
+                  errors.password ? 'ring-2 ring-red-500' : ''
+                }`}
                 placeholder="Senha"
               />
+              {errors.password && (
+                <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>
+              )}
             </div>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <Lock size={16} className="text-[#9D9DA7]" />
               </div>
               <input
-                id="confirm-password"
-                name="confirm-password"
+                {...register('password_confirmation')}
                 type="password"
-                required
-                value={password_confirmation}
-                onChange={(e) => setpassword_confirmation(e.target.value)}
-                className="w-full pl-9 pr-4 py-3 bg-[#1F1F23] border-none rounded-lg text-[#E4E4E7] placeholder-[#9D9DA7] focus:outline-none focus:ring-2 focus:ring-[#2A2A2F] transition-all duration-200"
+                className={`w-full pl-9 pr-4 py-3 bg-[#1F1F23] border-none rounded-lg text-[#E4E4E7] placeholder-[#9D9DA7] focus:outline-none focus:ring-2 focus:ring-[#2A2A2F] transition-all duration-200 ${
+                  errors.password_confirmation ? 'ring-2 ring-red-500' : ''
+                }`}
                 placeholder="Confirmar senha"
               />
+              {errors.password_confirmation && (
+                <p className="mt-1 text-sm text-red-500">{errors.password_confirmation.message}</p>
+              )}
             </div>
             <div className="flex items-center gap-4 p-3 bg-[#1F1F23] rounded-lg">
               <div
@@ -122,7 +137,9 @@ export function Register() {
                 }}
                 onClick={() => setShowColorPicker(!showColorPicker)}
               >
-                <span className="text-white text-sm font-semibold">{name.charAt(0).toUpperCase()}</span>
+                <span className="text-white text-sm font-semibold">
+                  {watch('name')?.charAt(0)?.toUpperCase() || '?'}
+                </span>
               </div>
               <div className="flex items-center gap-2 text-[#9D9DA7]">
                 <Palette size={16} />
@@ -136,7 +153,7 @@ export function Register() {
                         key={stdColor}
                         className="w-8 h-8 rounded-full cursor-pointer transition-all duration-200 hover:scale-110"
                         style={{ backgroundColor: stdColor }}
-                        onClick={() => setColor(stdColor)}
+                        onClick={() => setValue('color', stdColor)}
                       />
                     ))}
                   </div>
@@ -158,10 +175,20 @@ export function Register() {
           <div>
             <button
               type="submit"
-              className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-lg text-sm font-medium text-white bg-[#34AB70] hover:bg-[#34AB70]/90 focus:outline-none focus:ring-2 focus:ring-[#34AB70] transition-all duration-200"
+              disabled={isLoading}
+              className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-lg text-sm font-medium text-white bg-[#34AB70] hover:bg-[#34AB70]/90 focus:outline-none focus:ring-2 focus:ring-[#34AB70] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Criar conta
-              <ArrowRight size={16} />
+              {isLoading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Criando conta...
+                </>
+              ) : (
+                <>
+                  Criar conta
+                  <ArrowRight size={16} />
+                </>
+              )}
             </button>
             <Link
               to="/login"

@@ -17,9 +17,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const storedUser = localStorage.getItem("user");
       const storedUserID = localStorage.getItem("userID");
   
-      if (!storedToken || !storedUser || storedUser === "undefined") {
-        logout();
-      } else {
+      if (storedToken && storedUser && storedUser !== "undefined") {
         setToken(storedToken);
         setUser(JSON.parse(storedUser));
         setUserID(storedUserID ? JSON.parse(storedUserID) : undefined);
@@ -76,7 +74,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUserID(undefined);
     setToken(null);
     delete api.defaults.headers.Authorization;
-    toast.success("Logged out!");
   };
   
 
